@@ -22,6 +22,19 @@ function calcSquareRootsCore(a, b, c) {
 
 describe("GENERAL", () => {
     describe("my test cases", () => {
+
+        before(()=>{
+            console.log("Before all tests");
+        });
+
+        beforeEach(() => {
+            console.log("Before each test");
+        })
+    
+        afterEach(() => {
+            console.log("After each test");
+        })
+
         it('my OK test', () => {
             chai.assert.equal(true, true);
         });

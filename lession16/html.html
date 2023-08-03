@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML + DOM examples</title>
+</head>
+
+<body>
+    <div>
+        <p id="paragraph">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam
+            veritatis repellendus fuga vel neque, illo sint quisquam, nesciunt
+            velit nulla quia, in quam? Beatae, nisi? Aperiam eius alias at
+            eveniet.
+        </p>
+    </div>
+
+
+    <!-- <button onclick="alert('test')">BUTTON</button> -->
+    <!-- <button onclick="myOnClick()">BUTTON</button> -->
+    <button onclick="createButton()">CREATE NEW BUTTON</button>
+
+    <br>
+    <br>
+    <br>
+
+    <button onclick="addHTML()">ADD HTML</button>
+    <button onclick="addList()">ADD LIST</button>
+    <div id="output"></div>
+
+    <script>
+        const myParagraph = document.querySelector("#paragraph");
+        const myDiv = document.querySelector("div");
+        const newP = document.createElement("p");
+        const output = document.querySelector("#output");
+
+        // newP.innerText = "new paragraph";
+        newP.classList.add("active");
+        newP.textContent = "new paragraph";
+        newP.setAttribute("id", "newParagraph");
+        myDiv.appendChild(newP);
+
+        const newP2 = document.createElement("p");
+        newP.classList.add("active");
+        newP2.textContent = "new paragraph 2";
+        newP2.setAttribute("id", "newParagraph");
+        myDiv.appendChild(newP2);
+        myDiv.removeChild(newP2);
+
+        myDiv.replaceChild(newP2, newP);
+
+        myDiv.insertBefore(newP, myParagraph);
+
+        myDiv.insertAdjacentElement("afterbegin", newP2); // beforeBegin, afterBegin, beforeEnd, afterEnd
+
+        function myOnClick() {
+            console.log("function is working");
+        }
+
+        let count = 0;
+        function createButton() {
+            const newBtn = document.createElement("button");
+            const firstBtn = document.querySelector("button");
+            newBtn.textContent = `CREATED BUTTON #${count}`;
+            newBtn.onclick = () => console.log(`clicked`);
+            count++;
+
+            firstBtn.insertAdjacentElement("afterend", newBtn);
+        }
+
+        function addHTML() {
+            const newHTML = prompt();
+            if (newHTML === null) {
+                return;
+            }
+
+            output.innerHTML += newHTML;
+        }
+        
+        function addList() {
+            const newList = prompt("enter items, separated with ','");
+            const items = newList.split(",");
+
+            const ul = document.createElement("ul");
+            items.forEach((item) => {
+                const li = document.createElement("li");
+                li.textContent = item;
+                ul.appendChild(li);
+            });
+
+            output.innerHTML = "";
+            output.appendChild(ul);
+        }
+    </script>
+</body>
+
+</html>

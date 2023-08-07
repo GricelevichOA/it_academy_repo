@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms 4</title>
+</head>
+<body>
+    <form id="my-form" method="get" action="https://fe.it-academy.by/TestForm.php">
+        <input 
+            id="input-email" 
+            type="text" 
+            name="email"
+            placeholder="test@email.com"
+            onblur="onEmailBlur()"
+        ><br />
+
+        <input 
+            id="input-name" 
+            type="text" 
+            name="name"
+            placeholder="John Doe"
+        ><br />
+
+        <label>I agree:
+            <input
+                id="input-agree" 
+                type="checkbox" 
+                name="terms"
+                value="termsApproved"
+                checked
+            >
+        </label><br />
+
+        <input id="input-submit" type="submit" value="Click to submit!">
+    </form>
+
+    <script>
+        const emailInput = document.forms[0].email;
+
+        // function onEmailInput() {
+        //     console.log(emailInput.value);
+        // }
+
+        // function onEmailChange() {
+        //     console.log("email changed to ", emailInput.value);
+        //     emailInput.value = emailInput.value.replaceAll(/\d/g, "");
+        // }
+
+        function onEmailBlur() {
+            if (!emailInput.value) {
+                console.log("empty email field");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form 5</title>
+</head>
+<body>
+
+    <button id="btn">Click me!</button>
+    <button id="btn-second">Click me!</button>
+
+    <script>
+        const btn = document.querySelector("#btn");
+        const btnSecond = document.querySelector("#btn-second");
+
+        function myButtonHandler(e) {
+            console.log("some message 2", e);
+        }
+
+        btnSecond.addEventListener("click", myButtonHandler);
+        // btnSecond.removeEventListener("click", myButtonHandler);
+
+        btn.addEventListener("click", () => {
+            alert("some message 1");
+        });
+    </script>
+</body>
+</html>

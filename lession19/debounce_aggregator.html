@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debounce Aggregator</title>
+</head>
+<body>
+    Debounce Aggregator
+
+    <script>
+        const NO_TIMER_VALUE = "no-timer"
+        let timerId = NO_TIMER_VALUE;
+
+        function inputHandler(value) {
+            console.log("#inputHandler:value: ", value);
+        }
+
+        function withAggregator(func, waitForTimeMc = 1000) {
+            const allArgs = [];
+
+            function inner(value) {
+                allArgs.push(value);
+
+                if (timerId !== NO_TIMER_VALUE) {
+                    clearTimeout(timerId);
+                }
+
+                timerId = setTimeout(() => {
+                    func(allArgs);
+                    allArgs.splice(0, allArgs.length);
+                }, waitForTimeMc);
+            }
+
+            return inner;
+        }
+
+        const handlerWithAggregator = withAggregator(inputHandler);
+
+        const btn1 = document.createElement("button");
+        btn1.innerText = "Button #1";
+
+        const btn2 = document.createElement("button");
+        btn2.innerText = "Button #2";
+
+        document.body.insertAdjacentElement("beforeend", btn1);
+        document.body.insertAdjacentElement("beforeend", btn2);
+
+        btn1.addEventListener("click", () => {
+            // inputHandler("1");
+            handlerWithAggregator("1");
+        });
+
+        btn2.addEventListener("click", () => {
+            // inputHandler("2");
+            handlerWithAggregator("2");
+        });
+
+    </script>
+</body>
+</html>

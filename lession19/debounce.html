@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debounce</title>
+</head>
+<body>
+    Debounce 
+
+    <input oninput="inputHandler(event.target.value)" placeholder="(without debounce)">
+    <input oninput="handlerWithDebounce(event.target.value)" placeholder="(withDebounce)">
+
+    <script>
+        const NO_TIMER_VALUE = "no-timer"
+        let timerId = null;
+
+        function inputHandler(value) {
+            console.log("#inputHandler:value: ", value);
+        }
+
+        function withDebounce(func, waitForTimeMc = 1000) {
+            function inner(...args) {
+                if (timerId !== NO_TIMER_VALUE) {
+                    clearTimeout(timerId);
+                }
+
+                timerId = setTimeout(() => func(...args), waitForTimeMc);
+            }
+
+            return inner;
+        }
+
+        const handlerWithDebounce = withDebounce(inputHandler);
+
+    </script>
+</body>
+</html>

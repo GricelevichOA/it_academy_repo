@@ -23,7 +23,7 @@ function distanceInput() {
     const x1 = prompt("Введите x первой точки");
     const y1 = prompt("Введите y первой точки");
     const x2 = prompt("Введите x второй точки");
-    const y2 = prompt("Введите у второй точки");
+    const y2 = prompt("Введите y второй точки");
 
     const start = new Point(x1, y1);
     const end = new Point(x2, y2);

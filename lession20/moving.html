@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving</title>
+    <style>
+        button {
+            width: 100%;
+            max-width: 100px;
+        }
+
+        #field {
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+        }
+
+        #man {
+            width: 10px;
+            height: 10px;
+            background-color: brown;
+
+            margin-top: 50px;
+            margin-left: 50px;
+        }
+
+        .active {
+            background-color: green;
+            color: white;
+        }
+    </style>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const MIN_POS_X = 0;
+            const MIN_POS_Y = 0;
+            const MAX_POS_X = 290; // 300px - 10px
+            const MAX_POS_Y = 240; // 300px - 10px
+            const START_POS_X = 50;
+            const START_POS_Y = 50;
+            const ONE_STEP = 10;
+            const ONE_STEP_IF_RUN = 30;
+
+            const state = {
+                posX: START_POS_X,
+                posY: START_POS_Y,
+                isRun: false,
+            };
+
+            // const field = ;
+            const man = document.querySelector("#man");
+            const buttonUp = document.querySelector("#button-up");
+            const buttonUpLeft = document.querySelector("#button-up-left");
+            const buttonUpRight = document.querySelector("#button-up-right");
+            const buttonLeft = document.querySelector("#button-left");
+            const buttonRight = document.querySelector("#button-right");
+            const buttonDown = document.querySelector("#button-down");
+            const buttonDownLeft = document.querySelector("#button-down-left");
+            const buttonDownRight = document.querySelector("#button-down-right");
+            const buttonRun = document.querySelector("#button-run");
+
+            function move(directionX = 0, directionY = 0) {
+                const step = state.isRun ? ONE_STEP_IF_RUN : ONE_STEP;
+
+                state.posX = Math.round(state.posX + directionX * step);
+                state.posX = Math.max(MIN_POS_X, state.posX);
+                state.posX = Math.min(MAX_POS_X, state.posX);
+
+                state.posY = Math.round(state.posY + directionY * step);
+                state.posY = Math.max(MIN_POS_Y, state.posY);
+                state.posY = Math.min(MAX_POS_Y, state.posY);
+            }
+
+            function toggleIsRun() {
+                state.isRun = !state.isRun;
+            }
+
+            function updatePosition() {
+                man.style.marginLeft = `${state.posX}px`;
+                man.style.marginTop = `${state.posY}px`;
+            }
+
+            function getButtonHandler(directionX, directionY) {
+                function inner() {
+                    move(directionX, directionY);
+                    updatePosition();
+                }
+
+                return inner;
+            }
+
+            // CONTROLLERS
+            // window.getComputedStyle(man).marginTop // -- another variant
+            buttonLeft.addEventListener("click", getButtonHandler(-1, 0));
+            buttonRight.addEventListener("click", getButtonHandler(1, 0));
+            buttonUp.addEventListener("click", getButtonHandler(0, -1));
+            buttonDown.addEventListener("click", getButtonHandler(0, 1));
+            buttonUpLeft.addEventListener("click", getButtonHandler(-Math.SQRT1_2, -Math.SQRT1_2));
+            buttonUpRight.addEventListener("click", getButtonHandler(Math.SQRT1_2, -Math.SQRT1_2));
+            buttonDownLeft.addEventListener("click", getButtonHandler(-Math.SQRT1_2, Math.SQRT1_2));
+            buttonDownRight.addEventListener("click", getButtonHandler(Math.SQRT1_2, Math.SQRT1_2));
+
+            buttonRun.addEventListener("click", () => {
+                toggleIsRun();
+                buttonRun.classList.toggle("active");
+            })
+        })
+    </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <button id="button-up-left">&#x2196;</button>
+            </td>
+            <td>
+                <button id="button-up">&#x2191;</button>
+            </td>
+            <td>
+                <button id="button-up-right">&#x2197;</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="button-left">&#x2190;</button>
+            </td>
+            <td>
+                <button id="button-run">Move</button>
+            </td>
+            <td>
+                <button id="button-right">&#x2192;</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="button-down-left">&#x2199;</button>
+            </td>
+            <td>
+                <button id="button-down">&#x2193;</button>
+            </td>
+            <td>
+                <button id="button-down-right">&#x2198;</button>
+            </td>
+        </tr>
+    </table>
+
+    <div id="field">
+        <div id="man" style="margin-left: 50px; margin-top: 50px;"></div>
+    </div>
+</body>
+</html>

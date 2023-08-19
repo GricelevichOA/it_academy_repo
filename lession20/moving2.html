@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving</title>
+    <style>
+        button {
+            width: 100%;
+            max-width: 100px;
+        }
+
+        #field {
+            width: 300px;
+            height: 250px;
+            border: 1px solid black;
+        }
+
+        #ball {
+            width: 10px;
+            height: 10px;
+            background-color: brown;
+
+            border-radius: 50%;
+
+            margin-top: 50px;
+            margin-left: 50px;
+        }
+
+        .active {
+            background-color: green;
+            color: white;
+        }
+    </style>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const MIN_POS_X = 0;
+            const MIN_POS_Y = 0;
+            const MAX_POS_X = 290; // 300px - 10px
+            const MAX_POS_Y = 240; // 300px - 10px
+            const START_POS_X = 50;
+            const START_POS_Y = 50;
+            const ONE_STEP = 3;
+            const ONE_STEP_IF_RUN = 7;
+            const ONE_TICK = 1000 / 25 // 30 fps
+
+            const NO_TIMER_VALUE = "no-timer";
+
+            let intervalId = NO_TIMER_VALUE;
+
+
+            // MODEL
+            const state = {
+                posX: START_POS_X,
+                posY: START_POS_Y,
+                isRun: false,
+                directionX: Math.SQRT1_2,
+                directionY: Math.SQRT1_2,
+            };
+            
+            // let directionX = Math.SQRT1_2;
+            // let directionY = Math.SQRT1_2;
+
+            // const field = ;
+            const ball = document.querySelector("#ball");
+
+            const buttonStart = document.querySelector("#button-start");
+
+            const buttonRun = document.querySelector("#button-run");
+
+            function randBetween(min, max) {
+                const length = Math.random() * (max - min);
+                return min + length;
+            }
+
+            function setStartDirections() {
+                // normalization
+
+                const directionX = randBetween(-1, 1);
+                const directionYSign = Math.sign(randBetween(-1, 1));
+                const directionY = directionYSign * Math.sqrt(1 - directionX**2);
+
+                state.directionX = directionX;
+                state.directionY = directionY;
+            }
+
+            function move() {
+                const step = state.isRun ? ONE_STEP_IF_RUN : ONE_STEP;
+
+                state.posX = Math.round(state.posX + state.directionX * step);
+                state.posX = Math.max(MIN_POS_X, state.posX);
+                state.posX = Math.min(MAX_POS_X, state.posX);
+
+                if (state.posX === MAX_POS_X || state.posX === MIN_POS_X) {
+                    state.directionX *= -1;
+                }
+
+                state.posY = Math.round(state.posY + state.directionY * step);
+                state.posY = Math.max(MIN_POS_Y, state.posY);
+                state.posY = Math.min(MAX_POS_Y, state.posY);
+
+                if (state.posY === MAX_POS_Y || state.posY === MIN_POS_Y) {
+                    state.directionY *= -1;
+                }
+
+            }
+
+            function toggleIsRun() {
+                state.isRun = !state.isRun;
+            }
+
+            function updatePosition() {
+                ball.style.marginLeft = `${state.posX}px`;
+                ball.style.marginTop = `${state.posY}px`;
+            }
+
+            function step() {
+                move();
+                updatePosition();
+            }
+
+            function stop() {
+                console.log();
+
+            }
+
+            buttonRun.addEventListener("click", () => {
+                toggleIsRun();
+                buttonRun.classList.toggle("active");
+            })
+
+            buttonStart.addEventListener("click", () => {
+                if (intervalId === NO_TIMER_VALUE) {
+                    setStartDirections();
+                    intervalId = setInterval(step, ONE_TICK);
+                    buttonStart.innerText = "Pause";
+                } else {
+                    clearInterval(intervalId);
+                    intervalId = NO_TIMER_VALUE;
+                    buttonStart.innerText = "Start";
+                }
+            });
+        })
+    </script>
+</head>
+<body>
+    Moving 2
+
+    <br>
+    <button id="button-run">Run</button>
+
+    <br>
+    <button id="button-start">Start</button>
+
+
+    <div id="field">
+        <div id="ball" style="margin-left: 50px; margin-top: 50px;"></div>
+    </div>
+</body>
+</html>
